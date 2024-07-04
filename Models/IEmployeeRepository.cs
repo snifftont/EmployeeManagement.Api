@@ -8,6 +8,6 @@ namespace EmployeeManagement.Api.Models
         Task<Employee> GetEmployee(int employeeID);
         Task<Employee> AddEmployee(Employee employee);
         Task<Employee> UpdateEmployee(Employee employee);
-        void DeleteEmployee(int employeeID);
+        Task<Employee> DeleteEmployee(int employeeID);
     }
 }
