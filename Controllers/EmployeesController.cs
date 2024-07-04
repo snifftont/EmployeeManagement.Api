@@ -28,6 +28,27 @@ namespace EmployeeManagement.Api.Controllers
             }
 
         }
+        [HttpGet("{search}")]
+        public async Task<ActionResult<IEnumerable<Employee>>> Search(string name,  Gender? gender)
+        {
+            try
+            {
+              var result=await  employeeRepository.Search(name, gender);
+                if(result.Any())
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetEmployee(int id)
         {
@@ -48,6 +69,13 @@ namespace EmployeeManagement.Api.Controllers
             try
             {
                 if (employee == null) { return BadRequest(); }
+
+                var emp = employeeRepository.GetEmployeeByEmail(employee.Email);
+                if (emp == null)
+                {
+                    ModelState.AddModelError("email", "email already in user");
+                    return BadRequest(ModelState);
+                }
                 var createdEmployee = await employeeRepository.AddEmployee(employee);
                 return CreatedAtAction(nameof(GetEmployee), new { id = createdEmployee.EmployeeId }, createdEmployee);
             }
@@ -60,11 +88,11 @@ namespace EmployeeManagement.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
         {
-            try { 
-           var employeeToDelete= await employeeRepository.GetEmployee(id);
-            if (employeeToDelete == null) return NotFound($"Employee with Id = {id} not found");
-            
-           return await employeeRepository.DeleteEmployee(id);
+            try {
+                var employeeToDelete = await employeeRepository.GetEmployee(id);
+                if (employeeToDelete == null) return NotFound($"Employee with Id = {id} not found");
+
+                return await employeeRepository.DeleteEmployee(id);
             }
             catch (Exception)
             {
@@ -73,7 +101,7 @@ namespace EmployeeManagement.Api.Controllers
             }
         }
 
-        [HttpPut()]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<Employee>> UpdateEmployee(Employee employee)
         {
             try
