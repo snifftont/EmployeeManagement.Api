@@ -14,8 +14,7 @@ namespace EmployeeManagement.Api.Models
 
         public async Task<Department> GetDepartment(int departmentId)
         {
-            return await appDbContext.Departments
-                .FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
+            return await appDbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
         }
 
         public async Task<IEnumerable<Department>> GetDepartments()
