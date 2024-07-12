@@ -70,7 +70,7 @@ namespace EmployeeManagement.Api.Controllers
             {
                 if (employee == null) { return BadRequest(); }
 
-                var emp = employeeRepository.GetEmployeeByEmail(employee.Email);
+                var emp = await employeeRepository.GetEmployeeByEmail(employee.Email);
                 if (emp == null)
                 {
                     ModelState.AddModelError("email", "email already in user");
@@ -101,7 +101,8 @@ namespace EmployeeManagement.Api.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
+        //[HttpPut("{id:int}")]
+        [HttpPut()]
         public async Task<ActionResult<Employee>> UpdateEmployee(Employee employee)
         {
             try
