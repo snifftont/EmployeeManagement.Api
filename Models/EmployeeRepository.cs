@@ -71,7 +71,7 @@ namespace EmployeeManagement.Api.Models
                 result.DateOfBirth = employee.DateOfBirth;
                 result.Gender = employee.Gender;
                 result.DepartmentId = employee.DepartmentId;
-                result.PhotoPath = employee.PhotoPath;
+                result.PhotoPath = employee.PhotoPath?? "images/jon.png";
                 await appDbContext.SaveChangesAsync();
                 return result;
             }
