@@ -60,7 +60,7 @@ namespace EmployeeManagement.Api.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "error retrieving data from db");
+                return StatusCode(StatusCodes.Status500InternalServerError, "error retrieving data from db ");
             }
         }
         [HttpPost]
@@ -71,7 +71,7 @@ namespace EmployeeManagement.Api.Controllers
                 if (employee == null) { return BadRequest(); }
 
                 var emp = await employeeRepository.GetEmployeeByEmail(employee.Email);
-                if (emp == null)
+                if (emp != null)
                 {
                     ModelState.AddModelError("email", "email already in user");
                     return BadRequest(ModelState);
@@ -94,10 +94,10 @@ namespace EmployeeManagement.Api.Controllers
 
                 return await employeeRepository.DeleteEmployee(id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "error retrieving data from db");
+                return StatusCode(StatusCodes.Status500InternalServerError, "error retrieving data from db " + ex.Message);
             }
         }
 
