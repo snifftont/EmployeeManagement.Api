@@ -12,9 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options=>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"), options => options.EnableRetryOnFailure(maxRetryCount: 5,maxRetryDelay: System.TimeSpan.FromSeconds(30),errorNumbersToAdd: null));
 }
 );
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 var app = builder.Build();
